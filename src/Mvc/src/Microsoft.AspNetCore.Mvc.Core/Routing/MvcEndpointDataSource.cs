@@ -264,12 +264,13 @@ namespace Microsoft.AspNetCore.Mvc.Routing
         private RouteEndpoint CreateEndpoint(
             ActionDescriptor action,
             RoutePattern routePattern,
+            List<Action<EndpointModel>> conventions)
             string routeName,
             int order,
             RouteValueDictionary dataTokens,
             bool suppressLinkGeneration,
             bool suppressPathMatching,
-            List<Action<EndpointModel>> conventions)
+            List<Action<EndpointBuilder>> conventions)
         {
             RequestDelegate requestDelegate = (context) =>
             {
@@ -283,8 +284,9 @@ namespace Microsoft.AspNetCore.Mvc.Routing
 
             var model = new RouteEndpointModel(requestDelegate, routePattern, order);
 
+            var endpointBuilder = new RouteEndpointBuilder(requestDelegate, RoutePatternFactory.Pattern(patternRawText, defaults, parameterPolicies: null, segments), order);
             AddEndpointMetadata(
-                model.Metadata,
+                endpointBuilder.Metadata,
                 action,
                 routeName,
                 dataTokens,
