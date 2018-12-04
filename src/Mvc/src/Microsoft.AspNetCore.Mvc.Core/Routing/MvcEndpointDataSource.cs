@@ -264,7 +264,6 @@ namespace Microsoft.AspNetCore.Mvc.Routing
         private RouteEndpoint CreateEndpoint(
             ActionDescriptor action,
             RoutePattern routePattern,
-            List<Action<EndpointModel>> conventions)
             string routeName,
             int order,
             RouteValueDictionary dataTokens,
@@ -282,9 +281,7 @@ namespace Microsoft.AspNetCore.Mvc.Routing
                 return invoker.InvokeAsync();
             };
 
-            var model = new RouteEndpointModel(requestDelegate, routePattern, order);
-
-            var endpointBuilder = new RouteEndpointBuilder(requestDelegate, RoutePatternFactory.Pattern(patternRawText, defaults, parameterPolicies: null, segments), order);
+            var endpointBuilder = new RouteEndpointBuilder(requestDelegate, routePattern, order);
             AddEndpointMetadata(
                 endpointBuilder.Metadata,
                 action,
@@ -301,11 +298,11 @@ namespace Microsoft.AspNetCore.Mvc.Routing
             {
                 foreach (var convention in conventions)
                 {
-                    convention(model);
+                    convention(endpointBuilder);
                 }
             }
 
-            return (RouteEndpoint)model.Build();
+            return (RouteEndpoint)endpointBuilder.Build();
         }
 
         private static void AddEndpointMetadata(
