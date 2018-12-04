@@ -290,7 +290,7 @@ namespace Microsoft.AspNetCore.Mvc.Routing
                 suppressLinkGeneration,
                 suppressPathMatching);
 
-            model.DisplayName = action.DisplayName;
+            endpointBuilder.DisplayName = action.DisplayName;
 
             // REVIEW: When should conventions be run
             // Metadata should have lower precedence that data source metadata
