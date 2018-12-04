@@ -86,7 +86,7 @@ namespace RoutingSandbox.Framework
             return NullChangeToken.Singleton;
         }
 
-        public void Apply(Action<EndpointBuilder> convention)
+        public void Add(Action<EndpointBuilder> convention)
         {
             _conventions.Add(convention);
         }
